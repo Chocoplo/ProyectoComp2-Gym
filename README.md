@@ -180,6 +180,6 @@ El archivo WAR se genera en: `target/icesi-fit-0.0.1-SNAPSHOT.war`
 
 | Nombre | Correo |
 |--------|--------|
-| | |
-| | |
-| | |
+ |Daniel Escobar | <daniellondono2710@gmail.com> |
+| Jose Rojas | <josem.r2026@gmail.com> |
+|Puerre Cuevas|<Pierreandrescue@gmail.com> |
