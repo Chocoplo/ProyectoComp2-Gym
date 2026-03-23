@@ -116,9 +116,9 @@
 						<configuration>
 							<rules>
 								<rule>
-									<element>BUNDLE</element>
+									<element>PACKAGE</element>
 									<includes>
-										<include>com.icesi.fit.service.*</include>
+										<include>com/icesi/fit/service</include>
 									</includes>
 									<limits>
 										<limit>

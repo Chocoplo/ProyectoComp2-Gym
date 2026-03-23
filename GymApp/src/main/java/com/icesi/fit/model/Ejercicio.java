@@ -1,5 +1,6 @@
 package com.icesi.fit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,5 +42,6 @@ public class Ejercicio {
 
     @OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
 }

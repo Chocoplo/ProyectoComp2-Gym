@@ -4,6 +4,7 @@ import com.icesi.fit.model.Progreso;
 import com.icesi.fit.model.Rol;
 import com.icesi.fit.model.Usuario;
 import com.icesi.fit.repository.ProgresoRepository;
+import com.icesi.fit.repository.RolRepository;
 import com.icesi.fit.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,21 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final ProgresoRepository progresoRepository;
+    private final RolRepository rolRepository;
 
     /**
      * Saves a usuario. Validates that a Rol is always assigned.
+     * Business rule: "Evite usuarios sin Rol".
      */
     public Usuario saveUsuario(Usuario usuario) {
         if (usuario.getRol() == null) {
             throw new IllegalArgumentException("El usuario debe tener un rol asignado.");
         }
+        // Validate that the rol exists in the database
+        Rol rol = rolRepository.findById(usuario.getRol().getId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Rol no encontrado con id: " + usuario.getRol().getId()));
+        usuario.setRol(rol);
         return usuarioRepository.save(usuario);
     }
 
@@ -57,7 +65,7 @@ public class UsuarioService {
         Usuario entrenador = usuarioRepository.findById(entrenadorId)
                 .orElseThrow(() -> new IllegalArgumentException("Entrenador no encontrado con id: " + entrenadorId));
 
-        if (entrenador.getRol() != Rol.ENTRENADOR) {
+        if (!"ENTRENADOR".equalsIgnoreCase(entrenador.getRol().getNombre())) {
             throw new IllegalArgumentException("El usuario con id " + entrenadorId + " no tiene rol de ENTRENADOR.");
         }
 
@@ -74,7 +82,7 @@ public class UsuarioService {
         Usuario entrenador = usuarioRepository.findById(entrenadorId)
                 .orElseThrow(() -> new IllegalArgumentException("Entrenador no encontrado con id: " + entrenadorId));
 
-        if (entrenador.getRol() != Rol.ENTRENADOR) {
+        if (!"ENTRENADOR".equalsIgnoreCase(entrenador.getRol().getNombre())) {
             throw new IllegalArgumentException("El usuario con id " + entrenadorId + " no tiene rol de ENTRENADOR.");
         }
 

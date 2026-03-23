@@ -1,5 +1,6 @@
 package com.icesi.fit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,8 +27,8 @@ public class Usuario {
     @Column(nullable = false, length = 255)
     private String nombre;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,17 +37,21 @@ public class Usuario {
 
     @OneToMany(mappedBy = "entrenadorAsignado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private List<Usuario> asignados = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private List<Progreso> progresos = new ArrayList<>();
 
     @OneToMany(mappedBy = "emisor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private List<Notificacion> notificacionesEnviadas = new ArrayList<>();
 
     @OneToMany(mappedBy = "receptor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private List<Notificacion> notificacionesRecibidas = new ArrayList<>();
 }
