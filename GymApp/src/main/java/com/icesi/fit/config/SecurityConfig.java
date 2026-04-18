@@ -26,12 +26,29 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/css/**").permitAll()
+
+                // rutas protegidas
                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/entrenador/**").hasRole("ENTRENADOR")
+                .requestMatchers("/estudiante/**").hasRole("ESTUDIANTE")
+
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/home", true)
+                .successHandler((request, response, authentication) -> {
+                    var authorities = authentication.getAuthorities();
+
+                    if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                        response.sendRedirect("/admin");
+                    } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ENTRENADOR"))) {
+                        response.sendRedirect("/entrenador");
+                    } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ESTUDIANTE"))) {
+                        response.sendRedirect("/estudiante");
+                    } else {
+                        response.sendRedirect("/login?error");
+                    }
+                })
                 .permitAll()
             )
             .logout(logout -> logout
