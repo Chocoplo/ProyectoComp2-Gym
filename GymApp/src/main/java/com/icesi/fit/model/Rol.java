@@ -26,7 +26,7 @@ public class Rol {
     @Column(length = 255)
     private String descripcion;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "rol_permiso",
             joinColumns = @JoinColumn(name = "id_rol"),

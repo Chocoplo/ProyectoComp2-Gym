@@ -33,16 +33,19 @@ INSERT INTO rol_permiso (id_rol, id_permiso) VALUES (3, 8);
 INSERT INTO rol_permiso (id_rol, id_permiso) VALUES (3, 9);
 
 -- Usuarios: 1 Admin (id=1)
-INSERT INTO usuario (correo_institucional, nombre, id_rol) VALUES ('admin@icesi.edu.co', 'Carlos Admin', 1);
+INSERT INTO usuario (correo_institucional, nombre, password, enabled, id_rol) VALUES ('admin@icesi.edu.co', 'Carlos Admin', '$2a$10$ezxkhP9fBPIZWclw/sFxge0U41FrpSeRwElvh5rI8gIbV5maAsDLy', true, 1);
 
 -- Usuarios: 2 Entrenadores (id=2, id=3)
-INSERT INTO usuario (correo_institucional, nombre, id_rol) VALUES ('entrenador1@icesi.edu.co', 'Laura Entrenadora', 2);
-INSERT INTO usuario (correo_institucional, nombre, id_rol) VALUES ('entrenador2@icesi.edu.co', 'Miguel Entrenador', 2);
+INSERT INTO usuario (correo_institucional, nombre, password, enabled, id_rol) VALUES ('entrenador1@icesi.edu.co', 'Laura Entrenadora', '$2a$10$ezxkhP9fBPIZWclw/sFxge0U41FrpSeRwElvh5rI8gIbV5maAsDLy', true, 2);
+
+INSERT INTO usuario (correo_institucional, nombre, password, enabled, id_rol) VALUES ('entrenador2@icesi.edu.co', 'Miguel Entrenador', '$2a$10$ezxkhP9fBPIZWclw/sFxge0U41FrpSeRwElvh5rI8gIbV5maAsDLy', true, 2);
 
 -- Usuarios: 3 Estudiantes (id=4, id=5, id=6) con entrenador asignado
-INSERT INTO usuario (correo_institucional, nombre, id_rol, id_entrenador_asignado) VALUES ('estudiante1@icesi.edu.co', 'Ana Estudiante', 3, 2);
-INSERT INTO usuario (correo_institucional, nombre, id_rol, id_entrenador_asignado) VALUES ('estudiante2@icesi.edu.co', 'Pedro Estudiante', 3, 2);
-INSERT INTO usuario (correo_institucional, nombre, id_rol, id_entrenador_asignado) VALUES ('estudiante3@icesi.edu.co', 'Maria Estudiante', 3, 3);
+INSERT INTO usuario (correo_institucional, nombre, password, enabled, id_rol, id_entrenador_asignado) VALUES ('estudiante1@icesi.edu.co', 'Ana Estudiante', '$2a$10$ezxkhP9fBPIZWclw/sFxge0U41FrpSeRwElvh5rI8gIbV5maAsDLy', true, 3, 2);
+
+INSERT INTO usuario (correo_institucional, nombre, password, enabled, id_rol, id_entrenador_asignado) VALUES ('estudiante2@icesi.edu.co', 'Pedro Estudiante', '$2a$10$ezxkhP9fBPIZWclw/sFxge0U41FrpSeRwElvh5rI8gIbV5maAsDLy', true, 3, 2);
+
+INSERT INTO usuario (correo_institucional, nombre, password, enabled, id_rol, id_entrenador_asignado) VALUES ('estudiante3@icesi.edu.co', 'Maria Estudiante', '$2a$10$ezxkhP9fBPIZWclw/sFxge0U41FrpSeRwElvh5rI8gIbV5maAsDLy', true, 3, 3);
 
 -- 5 Ejercicios base (id=1..5)
 INSERT INTO ejercicio (nombre, tipo, descripcion, duracion_minutos, dificultad, url_video) VALUES ('Sentadillas', 'FUERZA', 'Ejercicio de fuerza para piernas y gluteos', 15, 'MEDIO', 'https://example.com/sentadillas');
