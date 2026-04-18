@@ -49,6 +49,22 @@ public class PermisoService {
     public List<Permiso> findAllPermisos() {
         return permisoRepository.findAll();
     }
+    /**
+        * Updates an existing permiso by ID.
+        */
+    public Permiso updatePermiso(Long id, Permiso permisoActualizado) {
+        Permiso permisoExistente = permisoRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Permiso no encontrado con id: " + id));
+
+        if (permisoActualizado.getNombre() == null || permisoActualizado.getNombre().isBlank()) {
+            throw new IllegalArgumentException("El permiso debe tener un nombre.");
+        }
+
+        permisoExistente.setNombre(permisoActualizado.getNombre());
+        permisoExistente.setDescripcion(permisoActualizado.getDescripcion());
+
+        return permisoRepository.save(permisoExistente);
+    }
 
     /**
      * Deletes a permiso by ID.
