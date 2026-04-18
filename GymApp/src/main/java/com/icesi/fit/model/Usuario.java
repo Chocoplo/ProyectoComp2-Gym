@@ -54,4 +54,11 @@ public class Usuario {
     @Builder.Default
     @JsonIgnore
     private List<Notificacion> notificacionesRecibidas = new ArrayList<>();
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean enabled = true;
 }
