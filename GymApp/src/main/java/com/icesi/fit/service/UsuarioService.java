@@ -30,10 +30,11 @@ public class UsuarioService {
         if (usuario.getRol() == null) {
             throw new IllegalArgumentException("El usuario debe tener un rol asignado.");
         }
-        // Validate that the rol exists in the database
+
         Rol rol = rolRepository.findById(usuario.getRol().getId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Rol no encontrado con id: " + usuario.getRol().getId()));
+
         usuario.setRol(rol);
         return usuarioRepository.save(usuario);
     }
@@ -52,6 +53,54 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public List<Usuario> findAllUsuarios() {
         return usuarioRepository.findAll();
+    }
+
+    /**
+     * Updates an existing usuario by ID.
+     * Validates that the usuario exists and that the assigned Rol also exists.
+     */
+    public Usuario updateUsuario(Long id, Usuario usuarioActualizado) {
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + id));
+
+        if (usuarioActualizado.getNombre() != null && !usuarioActualizado.getNombre().isBlank()) {
+            usuarioExistente.setNombre(usuarioActualizado.getNombre());
+        }
+
+        if (usuarioActualizado.getCorreoInstitucional() != null
+                && !usuarioActualizado.getCorreoInstitucional().isBlank()) {
+            usuarioExistente.setCorreoInstitucional(usuarioActualizado.getCorreoInstitucional());
+        }
+
+        if (usuarioActualizado.getPassword() != null
+                && !usuarioActualizado.getPassword().isBlank()) {
+            usuarioExistente.setPassword(usuarioActualizado.getPassword());
+        }
+
+        usuarioExistente.setEnabled(usuarioActualizado.isEnabled());
+
+        if (usuarioActualizado.getRol() != null) {
+            Rol rol = rolRepository.findById(usuarioActualizado.getRol().getId())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "Rol no encontrado con id: " + usuarioActualizado.getRol().getId()));
+            usuarioExistente.setRol(rol);
+        }
+
+        if (usuarioActualizado.getEntrenadorAsignado() != null) {
+            Usuario entrenador = usuarioRepository.findById(usuarioActualizado.getEntrenadorAsignado().getId())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "Entrenador no encontrado con id: " + usuarioActualizado.getEntrenadorAsignado().getId()));
+
+            if (entrenador.getRol() == null ||
+                    !"ENTRENADOR".equalsIgnoreCase(entrenador.getRol().getNombre())) {
+                throw new IllegalArgumentException(
+                        "El usuario con id " + entrenador.getId() + " no tiene rol de ENTRENADOR.");
+            }
+
+            usuarioExistente.setEntrenadorAsignado(entrenador);
+        }
+
+        return usuarioRepository.save(usuarioExistente);
     }
 
     /**

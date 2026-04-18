@@ -61,6 +61,28 @@ public class RolService {
                 .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con id: " + rolId));
         return rol.getPermisos();
     }
+    /**
+     * Updates an existing rol by ID.
+        * Validates that the rol exists and has at least one permiso assigned.
+        */
+    public Rol updateRol(Long id, Rol rolActualizado) {
+        Rol rolExistente = rolRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con id: " + id));
+
+        if (rolActualizado.getNombre() != null && !rolActualizado.getNombre().isBlank()) {
+            rolExistente.setNombre(rolActualizado.getNombre());
+            }
+
+        rolExistente.setDescripcion(rolActualizado.getDescripcion());
+
+        if (rolActualizado.getPermisos() == null || rolActualizado.getPermisos().isEmpty()) {
+            throw new IllegalArgumentException("El rol debe tener al menos un permiso asignado.");
+        }
+
+        rolExistente.setPermisos(rolActualizado.getPermisos());
+
+        return rolRepository.save(rolExistente);
+    }
 
     /**
      * Deletes a rol by ID.
