@@ -78,8 +78,7 @@ class RolServiceTest {
 
         IllegalArgumentException ex = assertThrows(
                 IllegalArgumentException.class,
-                () -> rolService.saveRol(sinPermisos)
-        );
+                () -> rolService.saveRol(sinPermisos));
 
         assertEquals("El rol debe tener al menos un permiso asignado.", ex.getMessage());
         verify(rolRepository, never()).save(any());
@@ -95,8 +94,7 @@ class RolServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> rolService.saveRol(nullPermisos)
-        );
+                () -> rolService.saveRol(nullPermisos));
         verify(rolRepository, never()).save(any());
     }
 
@@ -162,8 +160,7 @@ class RolServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> rolService.getPermisosByRolId(99L)
-        );
+                () -> rolService.getPermisosByRolId(99L));
     }
 
     // ========== deleteRol ==========
@@ -183,8 +180,7 @@ class RolServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> rolService.deleteRol(99L)
-        );
+                () -> rolService.deleteRol(99L));
         verify(rolRepository, never()).deleteById(anyLong());
     }
 }

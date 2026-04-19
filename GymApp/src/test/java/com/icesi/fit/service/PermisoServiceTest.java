@@ -59,8 +59,7 @@ class PermisoServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> permisoService.savePermiso(sinNombre)
-        );
+                () -> permisoService.savePermiso(sinNombre));
         verify(permisoRepository, never()).save(any());
     }
 
@@ -70,8 +69,7 @@ class PermisoServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> permisoService.savePermiso(blancoNombre)
-        );
+                () -> permisoService.savePermiso(blancoNombre));
         verify(permisoRepository, never()).save(any());
     }
 
@@ -136,8 +134,7 @@ class PermisoServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> permisoService.deletePermiso(99L)
-        );
+                () -> permisoService.deletePermiso(99L));
         verify(permisoRepository, never()).deleteById(anyLong());
     }
 }

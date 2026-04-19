@@ -23,37 +23,34 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/css/**").permitAll()
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/css/**").permitAll()
 
-                // rutas protegidas
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/entrenador/**").hasRole("ENTRENADOR")
-                .requestMatchers("/estudiante/**").hasRole("ESTUDIANTE")
+                        // rutas protegidas
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/entrenador/**").hasRole("ENTRENADOR")
+                        .requestMatchers("/estudiante/**").hasRole("ESTUDIANTE")
 
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                .loginPage("/login")
-                .successHandler((request, response, authentication) -> {
-                    var authorities = authentication.getAuthorities();
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .successHandler((request, response, authentication) -> {
+                            var authorities = authentication.getAuthorities();
 
-                    if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-                        response.sendRedirect("/admin");
-                    } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ENTRENADOR"))) {
-                        response.sendRedirect("/entrenador");
-                    } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ESTUDIANTE"))) {
-                        response.sendRedirect("/estudiante");
-                    } else {
-                        response.sendRedirect("/login?error");
-                    }
-                })
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout")
-            );
+                            if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                                response.sendRedirect("/admin");
+                            } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ENTRENADOR"))) {
+                                response.sendRedirect("/entrenador");
+                            } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ESTUDIANTE"))) {
+                                response.sendRedirect("/estudiante");
+                            } else {
+                                response.sendRedirect("/login?error");
+                            }
+                        })
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout"));
 
         return http.build();
     }
